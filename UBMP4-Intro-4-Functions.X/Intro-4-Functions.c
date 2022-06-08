@@ -23,6 +23,8 @@
 const char noButton = 0;
 const char UP = 1;
 const char DOWN = 2;
+const char left = 3;
+const char right = 4;
 
 // Program variable definitions
 unsigned char LED5Brightness = 125;
@@ -37,6 +39,14 @@ unsigned char button_pressed(void)
     else if(SW5 == 0)
     {
         return(DOWN);
+    }
+    else if(SW3 == 0)
+    {
+        return(left);
+    }
+    else if(SW2 == 0)
+    {
+        return(right);
     }
     else
     {
@@ -61,11 +71,14 @@ void pwm_LED5(unsigned char pwmValue)
     }
 }
 
+void pwm_LED5(unsigned char);
+
 int main(void)
 {
     OSC_config();               // Configure internal oscillator for 48 MHz
     UBMP4_config();             // Configure on-board UBMP4 I/O devices
-	
+
+ 
     while(1)
 	{
         // Read up/down buttons and adjust LED5 brightness
@@ -80,6 +93,19 @@ int main(void)
         {
             LED5Brightness -= 1;
         }
+        if(button == left)
+        {
+            LED5 = 1;
+            LED5Brightness = 255;
+        }
+        if(button == right)
+        {
+            LED5 = 0;
+            LED5Brightness = 0;
+        }
+
+          
+
 
         // PWM LED5 with current brightness
         pwm_LED5(LED5Brightness);
@@ -99,29 +125,41 @@ int main(void)
  * 
  * 1.   Which function in this program will run first? How do you know?
  * 
+ if button == up will run first as this is the rest position of the button and 
+ therefore will run before you press the button.
+
  * 2.   What is the purpose of the 'unsigned char' variable type declaration in
  *      the button_pressed() function? Is it used by this function to receive
  *      a variable from, or return a variable to the main code?
  * 
+ it is used to collect the value of the button and make it easier to right your code later on 
+
  * 3.   How does the function call statement 'button = button_pressed();' in the
  *      main code support your answer in 2, above?
  * 
+ it makes them equal at the start of the real code, this means that I was correct because it then 
+ uses the button pressed character to code 
+ 
  * 4.   What is the purpose of the 'unsigned char' variable type declaration in
  *      the pwm_LED5() function? Where does the value of the variable come from?
  *      Where does this value get stored in the function?
  * 
+ this is your full PWM code so that it can all run.the value is stated in the for loop.
+
  * 5.   C language compilers typically read through the entire program in a
  *      single pass, converting C code into machine code. The two functions,
  *      button_pressed() and pwm_LED5(), are located above the main() function
  *      so that their memory locations and variable requirements will be
  *      determined before the rest of the program compiles. When the compiler
  *      interprets the function call statements in the main code, it already
- *      knows where those functions are be in memory and which memory locations
+ *      knows where those functions are to be in memory and which memory locations
  *      are used by their variables.
  * 
  *      Try moving the button_pressed() and pwm_LED5() functions to below the
  *      closing brace of the main() function, and build the code. What happens?
  * 
+ it just fails the code and then tells you that you can't put it there.
+
  *      The compiler should have reported an error since it did not understand
  *      what the function call was referring to because it had not seen the
  *      function before the function call. We can eliminate this error by adding
@@ -145,6 +183,9 @@ void pwm_LED5(unsigned char);
  *      and the actual pwm_LED5() function declaration statement later in the
  *      code?
  * 
+ the prototype just lets it know that later on there will be a function called this,
+ as well it doesn't give the cariable name in the prototype
+
  * 6.   Building the program with the added function prototypes should now work
  *      without generating errors, just as it did in the original program.
  * 
@@ -168,16 +209,25 @@ void pwm_LED5(unsigned char);
  *      values passed between this code and the two setup functions? How do
  *      you know?
  * 
+ yes it states in the comments that it will clear all the pins, this looks like a set up 
+ code to get the chip ready to work, it clears it all and enables buttons and leds as inputs and outputs
+
  * 7.   The 'button' variable is a global variable because it was assigned
  *      at the beginning of the program, outside of any functions. Global
  *      variables are available to all functions. How does the 'button' variable
  *      get assigned a value? In which function does this occur?
  * 
+ it would occur in this file as it is the only file with this variable as well as it, 
+ gets put down into the function which is where it is assigned a value
+
  * 8.   Which variable does the value of LED5Brightness get transferred to in
  *      the pwm_LED5() function? Is this variable global, or local to the LED
  *      function? Could the pwm_LED5 function use the LED5Brightness variable
  *      directly, instead of transferring its value to another variable?
  * 
+ it looks like it will be put in as PWMvalue, this will be a local variable to this code,
+ yes you could most likely use the variable directly.
+
  * Programming Activities
  * 
  * 1.   It might be useful to have a button that instantly turns LED D5 fully

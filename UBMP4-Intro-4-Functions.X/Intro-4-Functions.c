@@ -29,6 +29,12 @@ const char right = 4;
 // Program variable definitions
 unsigned char LED5Brightness = 125;
 unsigned char button;
+unsigned char time;
+unsigned char wave;
+unsigned char number;
+unsigned char H;
+unsigned char T;
+unsigned char O;
 
 unsigned char button_pressed(void)
 {
@@ -54,6 +60,16 @@ unsigned char button_pressed(void)
     }
 }
 
+void wave(unsigned char time)
+{
+    if(time > 0)
+    {
+        beeper = 1;
+        __delay_us(time);
+        beeper = 0;
+    }
+}
+
 void pwm_LED5(unsigned char pwmValue)
 {
     for(unsigned char t = 255; t != 0; t --)
@@ -71,6 +87,242 @@ void pwm_LED5(unsigned char pwmValue)
     }
 }
 
+unsigned char reader (void)
+{
+    while(number > 100)
+    {
+        H ++;
+        number =- 100;
+    }
+
+        while(number > 10)
+        {
+            T ++;
+            number =- 10;
+        }
+
+            while(number > 1)
+            {
+                O ++;
+                O --;
+            }
+}
+
+unsigned char Hundreds(void)
+{
+
+    if(H == 1)
+    {
+        LED3 = 1;
+    }
+else
+{
+LED3 = 0;
+}
+
+    if(H == 2)
+    {
+        LED4 = 1;
+    }
+    else 
+    {
+        LED4 = 0;
+    }
+
+}
+
+unsigned char tens(void)
+{
+    if(T == 1)
+    {
+        LED3 = 1;
+    }
+    else 
+    {
+        LED3 = 0;
+    }
+
+    if(T == 2)
+    {
+        LED4 = 1;
+    }
+    else 
+    {
+        LED4 = 0;
+    }
+
+    if(T == 3)
+    {
+        LED3 = 1;
+        LED4 = 1;
+    }
+    else 
+    {
+        LED3 = 0;
+        LED4 = 0;
+    }
+
+    if(T == 4)
+    {
+        LED5 = 1;
+    }
+    else 
+    {
+        LED5 = 0;
+    }
+
+    if(T == 5)
+    {
+        LED3 = 1;
+        LED5 = 1;
+    }
+    else 
+    {
+        LED3 = 0;
+        LED5 = 0;
+    }
+
+    if(T == 6)
+    {
+        LED4 = 1;
+        LED5 = 1;
+    }
+    else 
+    {
+        LED4 = 0;
+        LED5 = 0;
+    }
+
+    if(T == 7)
+    {
+        LED3 = 1;
+        LED4 = 1;
+        LED5 = 1;
+    }
+    else 
+    {
+        LED3 = 0;
+        LED4 = 0;
+        LED5 = 0;
+    }
+
+    if(T == 8)
+    {
+        LED6 = 1;
+    }
+    else 
+    {
+        LED6 = 0;
+    }
+
+    if(T == 9)
+    {
+        LED6 = 1;
+        LED3 = 1;  
+    }
+    else 
+    {
+        LED3 = 0;
+        LED6 = 0;
+    }
+}
+
+
+unsigned char ones(void)
+{
+    if(O == 1)
+    {
+        LED3 = 1;
+    }
+    else 
+    {
+        LED3 = 0;
+    }
+
+    if(O == 2)
+    {
+        LED4 = 1;
+    }
+    else 
+    {
+        LED4 = 0;
+    }
+
+    if(O == 3)
+    {
+        LED3 = 1;
+        LED4 = 1;
+    }
+    else 
+    {
+        LED3 = 0;
+        LED4 = 0;
+    }
+
+    if(O == 4)
+    {
+        LED5 = 1;
+    }
+    else 
+    {
+        LED5 = 0;
+    }
+
+    if(O == 5)
+    {
+        LED3 = 1;
+        LED5 = 1;
+    }
+    else 
+    {
+        LED3 = 0;
+        LED5 = 0;
+    }
+
+    if(O == 6)
+    {
+        LED3 = 1;
+        LED5 = 1;
+    }
+    else 
+    {
+        LED3 = 0;
+        LED5 = 0;
+    }
+
+    if(O == 7)
+    {
+        LED3 = 1;
+        LED4 = 1;
+        LED5 = 1;
+    }
+    else 
+    {
+      LED3 = 0;
+        LED4 = 0;
+        LED5 = 0;   
+    }
+    if(O == 8)
+    {
+        LED6 = 1;
+    }
+    else 
+    {
+        LED6 = 0;
+    }
+
+    if(O== 9)
+    {
+        LED3 = 1;
+        LED6 = 1;
+    }
+    else 
+    {
+        LED3 = 0;
+        LED6 = 0;
+    }
+}
+
 void pwm_LED5(unsigned char);
 
 int main(void)
@@ -84,25 +336,55 @@ int main(void)
         // Read up/down buttons and adjust LED5 brightness
         button = button_pressed();
         
-        if(button == UP && LED5Brightness < 255)
-        {
-            LED5Brightness += 1;
-        }
+        // if(button == UP && LED5Brightness < 255)
+        // {
+        //     LED5Brightness += 1;
+        // }
 
-        if(button == DOWN && LED5Brightness > 0)
-        {
-            LED5Brightness -= 1;
-        }
-        if(button == left)
-        {
-            LED5 = 1;
-            LED5Brightness = 255;
-        }
-        if(button == right)
-        {
-            LED5 = 0;
-            LED5Brightness = 0;
-        }
+        // if(button == DOWN && LED5Brightness > 0)
+        // {
+        //     LED5Brightness -= 1;
+        // }
+        // if(button == left)
+        // {
+        //     LED5 = 1;
+        //     LED5Brightness = 255;
+        // }
+        // if(button == right)
+        // {
+        //     LED5 = 0;
+        //     LED5Brightness = 0;
+        // }
+        // if(button == right)
+        // {
+        //     LED3 = 1;
+        //     LED4 = 0;
+        //     LED5 = 0;
+        //     LED6 = 0;
+        // }
+        // if(button == UP)
+        // {
+        //     LED5 = 1;
+        //     LED4 = 0;
+        //     LED3 = 0;
+        //     LED6 = 0;
+        // }
+        // if(button == left)
+        // {
+        //     LED4 = 1;
+        //     LED3 = 0;
+        //     LED5 = 0;
+        //     LED6 = 0;
+        // }
+        // if(button == DOWN)
+        // {
+        //     LED6 = 1;
+        //     LED3 = 0;
+        //     LED4 = 0;
+        //     LED5 = 0;
+        // }
+
+
 
           
 
